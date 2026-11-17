@@ -16,45 +16,25 @@
     <div class="space-y-1 text-center">
       <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">V2Box Subscription Portal</p>
       <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">ទាញយក Server ចូល V2Box</h1>
-      <p class="text-sm text-slate-500 dark:text-slate-400">ចុចប៊ូតុងด้านក្រោម ដើម្បី Import Server ទាំងអស់ចូលកម្មវិធី V2Box ដោយស្វ័យប្រវត្តិ</p>
+      <p class="text-sm text-slate-500 dark:text-slate-400">ចុចប៊ូតុងด้านក្រោម ដើម្បី Import Server ទាំងអស់ចូលកម្មវិធី V2Box ដោយស្វ័យប្រវត្តិ[span_3](start_span)[span_3](end_span)</p>
     </div>
 
     <!-- Action Card -->
     <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-4">
       
-      <!-- Primary Import Button (Updated Scheme) -->
+      <!-- Primary Import Button -->
       <button onclick="importV2Box()" class="w-full py-3.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium text-base flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 transition-all">
         🚀 Import ចូល V2Box ផ្ទាល់
       </button>
 
-      <!-- Backup Copy Button -->
-      <button onclick="copyV2BoxLink()" class="w-full py-3 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all">
-        📋 ចម្លង Link (Copy Link)
-      </button>
-
-      <p id="statusMsg" class="text-xs text-center text-emerald-500 font-medium hidden">បានចម្លង Link រួចរាល់! យកទៅ Add from Clipboard ក្នុង App V2Box</p>
     </div>
   </div>
 
   <script>
-    // Link Gist Raw របស់អ្នក (ត្រូវបានលាក់ក្នុងកូដ មិនបង្ហាញឆៅៗលើវេបសាយ)
     const subUrl = "https://gist.githubusercontent.com/KhannChannvp/066d45795b51ba2439d5ecdf01a784fa/raw/e2cdb01d3a9af5797927b51ad010c6e8b39270a8/gistfile1.txt";
 
     function importV2Box() {
-      // ផ្លាស់ប្តូរមកប្រើទម្រង់ v2box://import?url= ซึ่งជាទម្រង់ស្តង់ដារមួយក្នុងការព្យាយាមហៅ App
       window.location.href = "v2box://import?url=" + encodeURIComponent(subUrl);
-    }
-
-    function copyV2BoxLink() {
-      navigator.clipboard.writeText(subUrl).then(() => {
-        const msg = document.getElementById('statusMsg');
-        msg.classList.remove('hidden');
-        setTimeout(() => {
-          msg.classList.add('hidden');
-        }, 3000);
-      }).catch(err => {
-        alert('សូម Copy Link នេះដោយដៃ៖ ' + subUrl);
-      });
     }
   </script>
 </body>
