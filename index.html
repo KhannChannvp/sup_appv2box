@@ -32,23 +32,31 @@
         <button onclick="importHapp()" class="w-full py-3 px-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-medium text-sm flex items-center justify-center gap-2 shadow-sm">
           Happ
         </button>
-        <button onclick="importV2Box()" class="w-full py-3 px-4 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2">
-          V2Box
+        <button onclick="copyV2BoxLink()" class="w-full py-3 px-4 bg-blue-600 text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 shadow-sm">
+          Copy V2Box Link
         </button>
       </div>
+      <p id="statusMsg" class="text-xs text-center text-emerald-500 font-medium hidden">បានចម្លង Link រួចរាល់! យកไป Paste ក្នុង App V2Box</p>
     </div>
   </div>
 
   <script>
-    // -- Link Gist Raw និង Function Import សម្រាប់ Happ និង V2Box --
     const subUrl = "https://gist.githubusercontent.com/KhannChannvp/066d45795b51ba2439d5ecdf01a784fa/raw/e2cdb01d3a9af5797927b51ad010c6e8b39270a8/gistfile1.txt";
 
     function importHapp() {
       window.location.href = "happ://add/" + encodeURIComponent(subUrl);
     }
 
-    function importV2Box() {
-      window.location.href = "v2box://install-sub?url=" + encodeURIComponent(subUrl);
+    function copyV2BoxLink() {
+      navigator.clipboard.writeText(subUrl).then(() => {
+        const msg = document.getElementById('statusMsg');
+        msg.classList.remove('hidden');
+        setTimeout(() => {
+          msg.classList.add('hidden');
+        }, 3000);
+      }).catch(err => {
+        alert('សូម Copy Link នេះដោយដៃ៖ ' + subUrl);
+      });
     }
   </script>
 </body>
