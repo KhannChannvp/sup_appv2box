@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="km" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Subscription - VPN Apps</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Kantumruy Pro -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kantumruy Pro', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'card': '0 10px 30px -5px rgba(0, 0, 0, 0.08)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Kantumruy Pro', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col justify-between transition-colors duration-300">
+
+    <!-- Top Navigation -->
+    <header class="w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 sticky top-0 z-50">
+        <div class="max-w-md mx-auto px-4 h-16 flex items-center justify-between">
+            <button class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition">
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+            <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-700 dark:text-slate-300">
+                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i>
+                <span>តំណភ្ជាប់ត្រូវបានការពារ</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200/50 dark:border-amber-800/50 text-amber-700 dark:text-amber-400 text-xs font-semibold">
+                    <span>USER</span>
+                    <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-md mx-auto px-4 py-6 w-full flex-grow space-y-6">
+
+        <!-- Page Title Info -->
+        <div class="space-y-1">
+            <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">អាំងស្តង់គ្រប់គ្រង</p>
+            <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Import Sub</h1>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Link Subscription សម្រាប់ Import ចូលកម្មវិធី តាមប្រតិបត្តិករនីមួយៗ</p>
+        </div>
+
+        <!-- Carrier Selector Tabs -->
+        <div class="grid grid-cols-3 gap-2.5 bg-white dark:bg-slate-900 p-1.5 rounded-2xl shadow-soft border border-slate-100 dark:border-slate-800">
+            <button onclick="switchCarrier('metfone')" id="tab-metfone" class="flex items-center justify-center gap-2 py-3 px-3 rounded-xl font-medium text-sm transition-all duration-200 bg-rose-500 text-white shadow-md shadow-rose-500/20">
+                <span class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold">M</span>
+                <span>Metfone</span>
+            </button>
+            <button onclick="switchCarrier('cellcard')" id="tab-cellcard" class="flex items-center justify-center gap-2 py-3 px-3 rounded-xl font-medium text-sm transition-all duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                <span class="w-6 h-6 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center text-xs font-bold">C</span>
+                <span>Cellcard</span>
+            </button>
+            <button onclick="switchCarrier('smart')" id="tab-smart" class="flex items-center justify-center gap-2 py-3 px-3 rounded-xl font-medium text-sm transition-all duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                <span class="w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xs font-bold">S</span>
+                <span>Smart</span>
+            </button>
+        </div>
+
+        <!-- Subscription Card -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-card border border-slate-100 dark:border-slate-800 space-y-6 relative overflow-hidden">
+            <div class="flex items-start justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-200">
+                        <i data-lucide="download" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-lg text-slate-900 dark:text-white" id="card-title">Link Subscription · Metfone</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">តំណភ្ជាប់សុវត្ថិភាពសម្រាប់ Import ចូល App</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons for Happ & V2Box -->
+            <div class="grid grid-cols-2 gap-3 pt-2">
+                <button onclick="handleAppClick('Happ')" class="flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-2xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-semibold text-sm hover:opacity-90 transition active:scale-95 shadow-lg shadow-slate-900/10">
+                    <i data-lucide="shield" class="w-4 h-4"></i>
+                    <span>Happ</span>
+                </button>
+                <button onclick="handleAppClick('V2Box')" class="flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-2xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-700/50 transition active:scale-95">
+                    <i data-lucide="box" class="w-4 h-4"></i>
+                    <span>V2Box</span>
+                </button>
+            </div>
+
+            <!-- Info Notice -->
+            <div class="bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/40 dark:border-amber-800/30 rounded-2xl p-4 space-y-2 text-xs text-amber-800 dark:text-amber-300">
+                <div class="flex items-start gap-2">
+                    <i data-lucide="lock" class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5"></i>
+                    <p>តំណភ្ជាប់ត្រូវបានចាក់សោ (URL Lock) និងការពារសុវត្ថិភាពដោយប្រព័ន្ធផ្ទាល់ខ្លួន។</p>
+                </div>
+                <div class="flex items-start gap-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5"></i>
+                    <p>ចុចលើប៊ូតុងខាងលើដើម្បីបើក App និង Import ដោយស្វ័យប្រវត្តិភ្លាមៗ។</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        // Locked Base64 Subscription URL (Gist URL protected)
+        const encodedSub = "aHR0cHM6Ly9naXN0LmdpdGh1YnVzZXJjb250ZW50LmNvbS9LaGFubkNoYW5udnAvMDY2ZDQ1Nzk1YjUxYmEyNDM5ZDVlY2RmMDFhNzg0ZmEvcmF3L2UyY2RiMDFkM2E5YWY1Nzk3OTI3YjUxYWQwMTBjNmU4MjM5MjcwYTgvZ2lzdGZpbGUxLnR4dA==";
+        const subUrl = atob(encodedSub);
+
+        const carrierData = {
+            metfone: { name: "Metfone", color: "bg-rose-500 text-white shadow-md shadow-rose-500/20" },
+            cellcard: { name: "Cellcard", color: "bg-orange-500 text-white shadow-md shadow-orange-500/20" },
+            smart: { name: "Smart", color: "bg-emerald-500 text-white shadow-md shadow-emerald-500/20" }
+        };
+
+        let currentCarrier = 'metfone';
+
+        function switchCarrier(carrier) {
+            currentCarrier = carrier;
+            ['metfone', 'cellcard', 'smart'].forEach(c => {
+                const btn = document.getElementById(`tab-${c}`);
+                if (c === carrier) {
+                    btn.className = `flex items-center justify-center gap-2 py-3 px-3 rounded-xl font-medium text-sm transition-all duration-200 ${carrierData[c].color}`;
+                } else {
+                    btn.className = `flex items-center justify-center gap-2 py-3 px-3 rounded-xl font-medium text-sm transition-all duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50`;
+                }
+            });
+            document.getElementById('card-title').innerText = `Link Subscription · ${carrierData[carrier].name}`;
+        }
+
+        function handleAppClick(appName) {
+            let targetScheme = '';
+            if (appName === 'Happ') {
+                targetScheme = `happ://add/${encodeURIComponent(subUrl)}`;
+            } else if (appName === 'V2Box') {
+                targetScheme = `v2box://install-sub?url=${encodeURIComponent(subUrl)}&name=${encodeURIComponent('VIP-' + carrierData[currentCarrier].name)}`;
+            }
+            
+            // Trigger redirection to App
+            window.location.href = targetScheme;
+        }
+    </script>
+</body>
+</html>
