@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Import Subscription - VPN Portal</title>
+  <title>Import Subscription - V2Box Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap">
   <style>
@@ -12,39 +12,36 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col justify-between">
   
-  <div class="max-w-md mx-auto px-4 py-8 w-full flex-grow space-y-6">
-    <div class="space-y-1">
-      <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Subscription Portal</p>
-      <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Import Sub</h1>
-      <p class="text-sm text-slate-500 dark:text-slate-400">Link Subscription សម្រាប់ Import ចូលកម្មវិធី តាមប្រតិបត្តិនីមួយៗ</p>
+  <div class="max-w-md mx-auto px-4 py-12 w-full flex-grow space-y-6 flex flex-col justify-center">
+    <div class="space-y-1 text-center">
+      <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">V2Box Subscription Portal</p>
+      <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Import ចូល V2Box</h1>
+      <p class="text-sm text-slate-500 dark:text-slate-400">ចុចប៊ូតុងด้านក្រោម ដើម្បីទាញយក Subscription ចូលកម្មវិធី V2Box ដោយស្វ័យប្រវត្តិ</p>
     </div>
 
-    <!-- Carrier Selector -->
-    <div class="bg-white dark:bg-slate-900 p-2 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 flex justify-center">
-      <span class="text-sm font-bold text-slate-700 dark:text-slate-200">Metfone / V2Box / Happ</span>
-    </div>
-
-    <!-- Action Buttons -->
+    <!-- Action Card -->
     <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-4">
-      <h2 class="text-base font-bold text-slate-800 dark:text-white">ទាញយក Subscription</h2>
       
-      <div class="grid grid-cols-2 gap-3">
-        <button onclick="importHapp()" class="w-full py-3 px-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-medium text-sm flex items-center justify-center gap-2 shadow-sm">
-          Happ
-        </button>
-        <button onclick="copyV2BoxLink()" class="w-full py-3 px-4 bg-blue-600 text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 shadow-sm">
-          Copy V2Box Link
-        </button>
-      </div>
-      <p id="statusMsg" class="text-xs text-center text-emerald-500 font-medium hidden">បានចម្លង Link រួចរាល់! យកไป Paste ក្នុង App V2Box</p>
+      <!-- Primary Import Button -->
+      <button onclick="importV2BoxDirect()" class="w-full py-3.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium text-base flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 transition-all">
+        🚀 Import ចូល V2Box ផ្ទាល់
+      </button>
+
+      <!-- Backup Copy Button -->
+      <button onclick="copyV2BoxLink()" class="w-full py-3 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all">
+        📋 ចម្លង Link (Copy Link)
+      </button>
+
+      <p id="statusMsg" class="text-xs text-center text-emerald-500 font-medium hidden">បានចម្លង Link រួចរាល់! យកไป Add from Clipboard ក្នុង App V2Box</p>
     </div>
   </div>
 
   <script>
     const subUrl = "https://gist.githubusercontent.com/KhannChannvp/066d45795b51ba2439d5ecdf01a784fa/raw/e2cdb01d3a9af5797927b51ad010c6e8b39270a8/gistfile1.txt";
 
-    function importHapp() {
-      window.location.href = "happ://add/" + encodeURIComponent(subUrl);
+    function importV2BoxDirect() {
+      // ព្យាយាមបើក App V2Box តាមរយៈ URI Scheme
+      window.location.href = "v2box://install-sub?url=" + encodeURIComponent(subUrl);
     }
 
     function copyV2BoxLink() {
