@@ -1,1 +1,444 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ភ្ជាប់សេវា VPN - ប្រព័ន្ធគ្រប់គ្រងទំនើប</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Kantumruy Pro & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Kantumruy Pro"', '"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .glass-panel {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        .animate-pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen pb-24 transition-colors duration-300 relative overflow-x-hidden">
 
+    <!-- Ambient Background Glow -->
+    <div id="ambientGlow" class="fixed top-[-10%] left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full bg-red-500/15 dark:bg-red-500/20 blur-[90px] pointer-events-none transition-colors duration-500"></div>
+
+    <!-- Main Container -->
+    <div class="max-w-md mx-auto px-4 pt-5 relative z-10">
+
+        <!-- Top Navigation Header -->
+        <header class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-white flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <button onclick="openNameModal()" class="flex items-center gap-1.5 text-left group" title="ចុចដើម្បីប្តូរឈ្មោះ">
+                        <h1 id="visitorNameDisplay" class="text-base font-bold leading-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">សួស្តី, ភ្ញៀវកិត្តិយស</h1>
+                        <i data-lucide="pencil" class="w-3 h-3 text-slate-400 group-hover:text-indigo-500"></i>
+                    </button>
+                    <div class="flex items-center gap-1.5 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span>ប្រព័ន្ធដំណើរការល្អ (99.9%)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <!-- QR Modal Button -->
+                <button onclick="openQrModal()" class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 shadow-sm active:scale-95 transition" title="បង្ហាញ QR Code">
+                    <i data-lucide="qr-code" class="w-4 h-4"></i>
+                </button>
+                <!-- Theme Toggle -->
+                <button onclick="toggleTheme()" class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 shadow-sm active:scale-95 transition" title="ប្តូរពណ៌ផ្ទៃ">
+                    <i data-lucide="moon" id="themeIcon" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Account Summary Banner (Bento Top) -->
+        <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-indigo-950 dark:via-slate-900 dark:to-slate-950 text-white rounded-3xl p-5 shadow-xl mb-5 border border-slate-700/50 relative overflow-hidden">
+            <div class="absolute right-[-20px] top-[-20px] opacity-10">
+                <i data-lucide="globe" class="w-36 h-36"></i>
+            </div>
+            
+            <div class="flex items-center justify-between mb-4 relative z-10">
+                <span class="px-3 py-1 rounded-full bg-white/10 text-[11px] font-semibold tracking-wide backdrop-blur-md border border-white/10">
+                    គម្រោង VIP UNLIMITED
+                </span>
+                <span class="text-xs text-slate-300 flex items-center gap-1">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i>
+                    នៅសល់ ២៨ ថ្ងៃ
+                </span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 relative z-10">
+                <div>
+                    <p class="text-[11px] text-slate-400 mb-0.5">ទិន្នន័យប្រើប្រាស់</p>
+                    <p class="text-lg font-bold">45.8 GB <span class="text-xs font-normal text-slate-400">/ ∞</span></p>
+                </div>
+                <div>
+                    <p class="text-[11px] text-slate-400 mb-0.5">ល្បឿនតភ្ជាប់</p>
+                    <p class="text-lg font-bold text-emerald-400">10 Gbps <span class="text-xs font-normal text-slate-400">VIP</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 1: Network Carrier Selector -->
+        <div class="mb-5">
+            <div class="flex items-center justify-between mb-2.5 px-1">
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">១. ជ្រើសរើសប្រព័ន្ធទូរស័ព្ទ</span>
+                <span id="pingIndicator" class="text-[11px] font-semibold text-red-500 flex items-center gap-1">
+                    <i data-lucide="activity" class="w-3 h-3"></i> 24ms
+                </span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2.5">
+                <!-- Metfone Card -->
+                <button onclick="switchNetwork('metfone')" id="net-metfone" class="net-card group relative p-3.5 rounded-2xl bg-white dark:bg-slate-900 border-2 border-red-500 shadow-md shadow-red-500/10 flex flex-col items-center gap-2 transition-all active:scale-95">
+                    <div class="w-10 h-10 rounded-full bg-red-500/10 text-red-600 flex items-center justify-center font-extrabold text-sm">
+                        M
+                    </div>
+                    <span class="text-xs font-bold text-slate-900 dark:text-white">Metfone</span>
+                    <span class="check-badge absolute top-2 right-2 w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center">
+                        <i data-lucide="check" class="w-2.5 h-2.5"></i>
+                    </span>
+                </button>
+
+                <!-- Cellcard Card -->
+                <button onclick="switchNetwork('cellcard')" id="net-cellcard" class="net-card group relative p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-orange-400 flex flex-col items-center gap-2 transition-all active:scale-95">
+                    <div class="w-10 h-10 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center font-extrabold text-sm">
+                        C
+                    </div>
+                    <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">Cellcard</span>
+                    <span class="check-badge hidden absolute top-2 right-2 w-4 h-4 rounded-full bg-orange-500 text-white flex items-center justify-center">
+                        <i data-lucide="check" class="w-2.5 h-2.5"></i>
+                    </span>
+                </button>
+
+                <!-- Smart Card -->
+                <button onclick="switchNetwork('smart')" id="net-smart" class="net-card group relative p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-400 flex flex-col items-center gap-2 transition-all active:scale-95">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-extrabold text-sm">
+                        S
+                    </div>
+                    <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">Smart</span>
+                    <span class="check-badge hidden absolute top-2 right-2 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center">
+                        <i data-lucide="check" class="w-2.5 h-2.5"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: One-Click Import Card -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm mb-5">
+            <div class="flex items-center justify-between mb-3">
+                <div>
+                    <span class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">២. បញ្ចូលទៅក្នុងកម្មវិធី</span>
+                    <h2 id="selectedTitle" class="text-lg font-bold text-slate-900 dark:text-white mt-0.5">
+                        ការកំណត់សម្រាប់ Metfone
+                    </h2>
+                </div>
+                <!-- Device Limit Badge -->
+                <div id="deviceBadge" class="px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-xs font-bold">
+                    ឧបករណ៍៖ 1/2
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-5">
+                ចុចលើកម្មវិធីដែលអ្នកបានដំឡើងខាងក្រោម ដើម្បីនាំចូល Server ដោយស្វ័យប្រវត្តិ (Auto-Update Subscription)។
+            </p>
+
+            <!-- Primary Import Buttons -->
+            <div class="space-y-2.5">
+                <!-- V2Box Button -->
+                <button onclick="launchImport('v2box')" class="w-full py-3.5 px-4 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm flex items-center justify-between shadow-lg shadow-indigo-600/20 active:scale-[0.98] transition-all">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center font-bold text-xs">
+                            V2
+                        </div>
+                        <div class="text-left">
+                            <div class="leading-none">នាំចូលទៅកាន់ V2Box</div>
+                            <div class="text-[10px] text-indigo-200 mt-1">បើក និងទាញយក Server ភ្លាមៗ</div>
+                        </div>
+                    </div>
+                    <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Copy Link Divider -->
+            <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
+                <div class="truncate text-xs text-slate-400 font-mono bg-slate-100 dark:bg-slate-950 px-3 py-2 rounded-xl flex-1 select-all" id="maskedUrlText">
+                    https://vip-kh.net/sub/metfone-••••••
+                </div>
+                <button onclick="copySubscription()" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 shrink-0 active:scale-95 transition">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                    <span>ចម្លង Link</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: App Store / Play Store Downloads -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-4 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                    <i data-lucide="download-cloud" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="text-xs font-bold text-slate-900 dark:text-white">មិនទាន់មានកម្មវិធីមែនទេ?</h3>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400">ទាញយក V2Box ដោយឥតគិតថ្លៃ</p>
+                </div>
+            </div>
+            <div class="flex gap-1.5">
+                <a href="https://apps.apple.com/app/v2box-v2ray-client/id6446814690" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-[11px] font-bold hover:bg-slate-200 transition">iOS</a>
+                <a href="https://play.google.com/store/apps/details?id=dev.hexasoftware.v2box" target="_blank" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-[11px] font-bold hover:bg-slate-200 transition">Android</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- QR Code Modal -->
+    <div id="qrModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-sm p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 max-w-xs w-full border border-slate-200 dark:border-slate-800 shadow-2xl text-center transform transition-all">
+            <div class="flex items-center justify-between mb-4">
+                <span id="qrModalTitle" class="text-sm font-bold">QR Code • Metfone</span>
+                <button onclick="closeQrModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            
+            <!-- Dynamic QR Code Image -->
+            <div class="bg-white p-4 rounded-2xl inline-block border border-slate-100 shadow-inner mb-4">
+                <img id="qrImage" src="" alt="Subscription QR Code" class="w-44 h-44 object-contain">
+            </div>
+
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4">
+                បើកកម្មវិធី V2Box រួចចុចសញ្ញាបូក (+) -> Scan QR Code ដើម្បីភ្ជាប់ភ្លាមៗ។
+            </p>
+            <button onclick="closeQrModal()" class="w-full py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold">
+                បិទផ្ទាំងនេះ
+            </button>
+        </div>
+    </div>
+
+    <!-- Edit Visitor Name Modal -->
+    <div id="nameModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/60 backdrop-blur-sm p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 max-w-xs w-full border border-slate-200 dark:border-slate-800 shadow-2xl">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-sm font-bold">កំណត់ឈ្មោះអ្នកប្រើប្រាស់</span>
+                <button onclick="closeNameModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <input type="text" id="visitorNameInput" placeholder="បញ្ចូលឈ្មោះរបស់អ្នក..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:border-indigo-500 mb-4">
+            <button onclick="saveVisitorName()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition">
+                រក្សាទុកឈ្មោះ
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toastBox" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-4 transition-all duration-300">
+        <div class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2.5 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-2">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 dark:text-emerald-600"></i>
+            <span id="toastText">ជោគជ័យ</span>
+        </div>
+    </div>
+
+    <input type="text" id="clipboardHelper" class="sr-only" aria-hidden="true">
+
+    <script>
+        lucide.createIcons();
+
+        // គ្រប់គ្រងឈ្មោះអ្នកចូលមើល (ទាញពី URL ?name=... ឬ localStorage)
+        function initVisitorName() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramName = urlParams.get('name') || urlParams.get('user');
+            const savedName = localStorage.getItem('vpn_visitor_name');
+            const finalName = paramName || savedName || 'ភ្ញៀវកិត្តិយស';
+
+            if (paramName) {
+                localStorage.setItem('vpn_visitor_name', paramName);
+            }
+            document.getElementById('visitorNameDisplay').textContent = `សួស្តី, ${finalName}`;
+        }
+
+        function openNameModal() {
+            const current = localStorage.getItem('vpn_visitor_name') || '';
+            document.getElementById('visitorNameInput').value = current;
+            const modal = document.getElementById('nameModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeNameModal() {
+            const modal = document.getElementById('nameModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function saveVisitorName() {
+            const newName = document.getElementById('visitorNameInput').value.trim();
+            if (newName) {
+                localStorage.setItem('vpn_visitor_name', newName);
+                document.getElementById('visitorNameDisplay').textContent = `សួស្តី, ${newName}`;
+                notify(`បានប្តូរឈ្មោះទៅជា "${newName}"`);
+            }
+            closeNameModal();
+        }
+
+        initVisitorName();
+
+        // ព័ត៌មាន Subscription តាមប្រតិបត្តិករ (ប្តូរ Link របស់អ្នកនៅទីនេះ)
+        const NETWORK_DATA = {
+            metfone: {
+                label: 'Metfone',
+                url: 'https://gist.githubusercontent.com/KhannChannvp/6155e85e7e3fe8246e7c1959ada2daac/raw/52b6acd9693bd807284225ef2975a513bac8e5be/gistfile1.txt',
+                masked: 'https://gist.githubusercontent.com/KhannChannvp/••••••',
+                devices: '1/2',
+                ping: '24ms',
+                colorClass: 'border-red-500 shadow-md shadow-red-500/10',
+                glowClass: 'bg-red-500/15 dark:bg-red-500/20',
+                pingColor: 'text-red-500'
+            },
+            cellcard: {
+                label: 'Cellcard',
+                url: 'https://gist.githubusercontent.com/KhannChannvp/6155e85e7e3fe8246e7c1959ada2daac/raw/52b6acd9693bd807284225ef2975a513bac8e5be/gistfile1.txt',
+                masked: 'https://gist.githubusercontent.com/KhannChannvp/••••••',
+                devices: '0/2',
+                ping: '19ms',
+                colorClass: 'border-orange-500 shadow-md shadow-orange-500/10',
+                glowClass: 'bg-orange-500/15 dark:bg-orange-500/20',
+                pingColor: 'text-orange-500'
+            },
+            smart: {
+                label: 'Smart',
+                url: 'https://gist.githubusercontent.com/KhannChannvp/6155e85e7e3fe8246e7c1959ada2daac/raw/52b6acd9693bd807284225ef2975a513bac8e5be/gistfile1.txt',
+                masked: 'https://gist.githubusercontent.com/KhannChannvp/••••••',
+                devices: '2/2',
+                ping: '21ms',
+                colorClass: 'border-emerald-500 shadow-md shadow-emerald-500/10',
+                glowClass: 'bg-emerald-500/15 dark:bg-emerald-500/20',
+                pingColor: 'text-emerald-500'
+            }
+        };
+
+        let activeNetwork = 'metfone';
+
+        function switchNetwork(netKey) {
+            activeNetwork = netKey;
+            const info = NETWORK_DATA[netKey];
+
+            // Reset all network cards
+            document.querySelectorAll('.net-card').forEach(card => {
+                card.className = 'net-card group relative p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col items-center gap-2 transition-all active:scale-95';
+                card.querySelector('.check-badge').classList.add('hidden');
+            });
+
+            // Highlight selected network card
+            const selectedCard = document.getElementById(`net-${netKey}`);
+            selectedCard.className = `net-card group relative p-3.5 rounded-2xl bg-white dark:bg-slate-900 border-2 ${info.colorClass} flex flex-col items-center gap-2 transition-all active:scale-95`;
+            selectedCard.querySelector('.check-badge').classList.remove('hidden');
+
+            // Update Ambient Glow & Texts
+            document.getElementById('ambientGlow').className = `fixed top-[-10%] left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full ${info.glowClass} blur-[90px] pointer-events-none transition-colors duration-500`;
+            document.getElementById('selectedTitle').textContent = `ការកំណត់សម្រាប់ ${info.label}`;
+            document.getElementById('maskedUrlText').textContent = info.masked;
+            document.getElementById('deviceBadge').textContent = `ឧបករណ៍៖ ${info.devices}`;
+
+            const pingEl = document.getElementById('pingIndicator');
+            pingEl.className = `text-[11px] font-semibold ${info.pingColor} flex items-center gap-1`;
+            pingEl.innerHTML = `<i data-lucide="activity" class="w-3 h-3"></i> ${info.ping}`;
+            lucide.createIcons();
+        }
+
+        function launchImport(app) {
+            const info = NETWORK_DATA[activeNetwork];
+            const encodedUrl = encodeURIComponent(info.url);
+            const subName = encodeURIComponent(`VIP ${info.label}`);
+
+            if (app === 'v2box') {
+                notify(`កំពុងបើក V2Box សម្រាប់ ${info.label}...`);
+                window.location.href = `v2box://install-sub?url=${encodedUrl}&name=${subName}`;
+            }
+        }
+
+        function copySubscription() {
+            const info = NETWORK_DATA[activeNetwork];
+            const helper = document.getElementById('clipboardHelper');
+            helper.value = info.url;
+            helper.select();
+            helper.setSelectionRange(0, 99999);
+            try {
+                document.execCommand('copy');
+                notify(`បានចម្លង Link របស់ ${info.label} រួចរាល់!`);
+            } catch (e) {
+                notify('មិនអាចចម្លងបានទេ');
+            }
+        }
+
+        function openQrModal() {
+            const info = NETWORK_DATA[activeNetwork];
+            document.getElementById('qrModalTitle').textContent = `QR Code • ${info.label}`;
+            document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(info.url)}`;
+            const modal = document.getElementById('qrModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeQrModal() {
+            const modal = document.getElementById('qrModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            document.getElementById('themeIcon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+            lucide.createIcons();
+        }
+
+        let toastTimer;
+        function notify(msg) {
+            const box = document.getElementById('toastBox');
+            document.getElementById('toastText').textContent = msg;
+            box.classList.remove('opacity-0', 'translate-y-4');
+            box.classList.add('opacity-100', 'translate-y-0');
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                box.classList.add('opacity-0', 'translate-y-4');
+                box.classList.remove('opacity-100', 'translate-y-0');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
